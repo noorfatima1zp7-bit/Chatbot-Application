@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot Application</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #2e7d32;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .chat-container {
+      width: 420px;
+      background: #fefefe;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0px 6px 12px rgba(0,0,0,0.2);
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .logo img {
+      width: 60px;
+      height: 60px;
+    }
+    .messages {
+      height: 350px;
+      overflow-y: auto;
+      background: #fcffed;
+      border: 2px solid #d4e157;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .user {
+      color: #2e7d32;
+      margin: 6px 0;
+      background: #e6f9d5;
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 10px;
+      align-self: flex-end;
+    }
+    .bot {
+      color: #444;
+      margin: 6px 0;
+      background: #fff8d6;
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 10px;
+    }
+    input {
+      width: 72%;
+      padding: 10px;
+      border-radius: 12px;
+      background: #fff8d6;
+      border: 2px solid #d4e157;
+      outline: none;
+      margin-right: 5px;
+      color: black;
+    }
+    button {
+      width: 22%;
+      padding: 10px;
+      margin-top: 5px;
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #256428;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <!-- Logo -->
+    <div class="logo">
+      <img src="message-bot.png" alt="Chatbot Logo">
+    </div>
+
+    <!-- Chat messages -->
+    <div class="messages" id="chatBox">
+      <div class="bot">🤖 Welcome to AI Chatbot... How can I help you today?</div>
+    </div>
+
+    <input type="text" id="userInput" placeholder="Welcome to Chatbot......." onkeypress="checkEnter(event)">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    // 🧠 Smarter reply system
+    function botResponse(userMsg) {
+      const msg = userMsg.toLowerCase();
+
+      const responses = {
+        "hi": "Hello! How can I help you? 😊",
+        "hello": "Hi there! 👋",
+        "hey": "Hey! How are you doing today? 😄",
+        "how are you": "I’m doing great, thanks for asking! 🌿 How about you?",
+        "fine": "That’s awesome! Keep smiling 😊",
+        "sad": "I'm sorry to hear that 😔 Remember, even bad days end!",
+        "your name": "I’m your friendly AI Chatbot 🤖",
+        "who are you": "I’m a simple chatbot created with HTML, CSS, and JavaScript 💻",
+        "bye": "Goodbye! Take care and have a sunny day ☀️",
+        "good morning": "Good morning! Wishing you a productive day ahead 🌞",
+        "good night": "Good night! Sleep well and dream big 🌙",
+        "thank you": "You're very welcome! 🌼",
+        "thanks": "No problem! Glad to help 😇",
+        "help": "Sure! You can ask me about coding, learning, or anything fun 😃",
+        "who created you": "I was built by a creative developer using JavaScript 💡",
+        "what is javascript": "JavaScript is a programming language that adds interactivity to websites 💻",
+        "what is html": "HTML structures web pages — like the skeleton of a website 🧱",
+        "what is css": "CSS styles your pages beautifully 🎨",
+        "what is react": "React is a JavaScript library for building UI components ⚛️",
+        "what is api": "API means Application Programming Interface — it lets software talk to each other 🔗",
+        "what is sql": "SQL is used to manage and query databases 💾",
+        "what is node": "Node.js lets you run JavaScript on the server 🚀",
+        "what is github": "GitHub is a platform where developers share and collaborate on code 💻",
+        "love": "Aww ❤️ That’s sweet! Love makes the world brighter.",
+        "joke": "Why don’t programmers like nature? Too many bugs! 🐛😂",
+        "funny": "Haha, I try my best to make you smile 😅",
+        "weather": "I can’t check the weather yet 🌦️ but I hope it’s sunny where you are!",
+        "time": "The current time is " + new Date().toLocaleTimeString(),
+        "date": "Today's date is " + new Date().toLocaleDateString(),
+        "where are you from": "I live in the cloud ☁️ Always connected and ready to chat!",
+        "age": "I don’t age like humans, but I’m always learning new things 🤖",
+        "fact": "Did you know? The first computer bug was an actual moth found in a computer! 🦋"
+      };
+
+      for (const key in responses) {
+        if (msg.includes(key)) return responses[key];
+      }
+
+      // 👇 Always reply with something (random friendly responses)
+      const randomReplies = [
+        "That’s interesting! Tell me more 😄",
+        "Hmm, I’d love to know more about that 🤔",
+        "Oh really? That sounds cool! 😎",
+        "Could you explain a bit more?",
+        "I'm not sure, but I can try to help 💡",
+        "I like how you think! Tell me more 🧠",
+        "Sounds awesome! What made you say that? 😊",
+        "Haha, that’s funny! 😂",
+        "Interesting... I’m curious to know more about it!",
+        "That’s cool! Keep going ✨"
+      ];
+
+      return randomReplies[Math.floor(Math.random() * randomReplies.length)];
+    }
+
+    // 📨 Send user message
+    function sendMessage() {
+      const userInput = document.getElementById("userInput");
+      const chatBox = document.getElementById("chatBox");
+      const userMsg = userInput.value.trim();
+
+      if (!userMsg) return;
+
+      const userDiv = document.createElement("div");
+      userDiv.classList.add("user");
+      userDiv.textContent = userMsg;
+      chatBox.appendChild(userDiv);
+
+      const botDiv = document.createElement("div");
+      botDiv.classList.add("bot");
+      botDiv.textContent = "Typing...";
+      chatBox.appendChild(botDiv);
+
+      setTimeout(() => {
+        botDiv.textContent = botResponse(userMsg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 600);
+
+      userInput.value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // 🔘 Enter key support
+    function checkEnter(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
+    }
+  </script>
+</body>
+</html>
